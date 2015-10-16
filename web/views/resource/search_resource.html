@@ -1,0 +1,137 @@
+<div ng-controller="ExtendedSearchController">
+	<div class="col-md-12">
+		<div class="col-md-4">
+			<div class="thumbnail">
+				RESOURCE name:
+				<input type="text" ng-model="query.resource.name">
+				<br>
+				RESOURCE class:
+				<select class="form-control" id="class"
+						ng-model="query.resource.class_id"
+						ng-options="class.class_id as class.name for class in classes">
+				</select>
+
+				<br>
+
+				<br>
+
+				OWNER first name:
+				<input type="text" ng-model="query.owner.first_name">
+				<br>
+				OWNER last name:
+				<input type="text" ng-model="query.owner.last_name">
+				<br>
+				OWNER middle name:
+				<input type="text" ng-model="query.owner.middle_name">
+				<br>
+				<br>
+
+				PARAMETER length:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.length.start">
+				to:
+				<input type="text" ng-model="query.parameter.length.end">
+				<br>
+				PARAMETER width:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.width.start">
+				to:
+				<input type="text" ng-model="query.parameter.width.end">
+				<br>
+				PARAMETER height:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.height.start">
+				to:
+				<input type="text" ng-model="query.parameter.height.end">
+				<br>
+				PARAMETER square:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.square.start">
+				to:
+				<input type="text" ng-model="query.parameter.square.end">
+				<br>
+				PARAMETER volume:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.volume.start">
+				to:
+				<input type="text" ng-model="query.parameter.volume.end">
+				<br>
+				PARAMETER weight:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.weight.start">
+				to:
+				<input type="text" ng-model="query.parameter.weight.end">
+				<br>
+				PARAMETER perimeter:
+				<br>
+				from:
+				<input type="text" ng-model="query.parameter.perimeter.start">
+				to:
+				<input type="text" ng-model="query.parameter.perimeter.end">
+				<br>
+
+
+				<button ng-click="search()">search</button>
+			</div>
+		</div>
+
+		<div class="col-md-8">
+			<div >
+				RESULT:
+				<div ng-repeat="res in resources track by $index" class="jumbotron">
+						<b>resource:</b>
+						<br>
+						name: {{res.name}}
+						<br>
+						class: {{res.class}}
+						<br>
+						<b>parameters:</b>
+						<br>
+						length: {{res.parameters.length}}
+						<br>
+						width: {{res.parameters.width}}
+						<br>
+						heigth: {{res.parameters.height}}
+						<br>
+						square: {{res.parameters.square}}
+						<br>
+						<b>owner:</b>
+						<br>
+						first_name: {{res.owner.first_name}}
+						<br>
+						last_name: {{res.owner.last_name}}
+						<br>
+						middle_name: {{res.owner.middle_name}}
+						<br>
+
+						<br>
+				</div>
+				<!--
+                <div ng-repeat="own in owners" style="background-color: yellow">
+                    <p>
+                    owner
+                    first_name: {{own.first_name}}
+                    <br>
+                    last_name: {{own.last_name}}
+                    <br>
+                    middle_name: {{own.middle_name}}
+                    <br>
+                    pasport_series: {{own.pasport_series}}
+                    <br>
+                    pasport_number: {{own.pasport_number}}
+                    <br>
+                    address: {{own.address}}
+                    <br>
+                    </p>
+            </div>
+             -->
+			</div>
+		</div>
+	</div>
+</div>
