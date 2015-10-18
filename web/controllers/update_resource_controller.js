@@ -21,16 +21,36 @@
 
             $scope.coordId = null;
             $scope.coord = {};
+            $scope.lat = {};
+            $scope.lng = {};
 
-            $scope.createCoords = function(coord){
+            $scope.isShowMap = false;
+            $scope.showMap = function (){
+                $scope.isShowMap = !$scope.isShowMap;
+            };
+
+            $scope.formatCoords = function(coords){
+                return  CoordsService.formatCoords (coords);
+            };
+
+            $scope.createCoords = function(lat, lng){
+                var lat = CoordsService.convertDMSToDD(lat.deg,lat.min, lat.sec).toFixed(4);
+                var lng = CoordsService.convertDMSToDD(lng.deg,lng.min, lng.sec).toFixed(4);
+                var coord = {lat: lat, lng: lng};
                 if(!CoordsService.createCoords(coord, $rootScope.coords, $scope.coordId)){
                     $scope.coordId = null;
                 }
+                $scope.lat = {};
+                $scope.lng = {};
                 $scope.coord = {};
             };
             $scope.changeCoords = function(coord, coordId){
                 var newCoords = CoordsService.changeCoords(coord, coordId);
                 $scope.coord = newCoords.coord;
+                var newLat = CoordsService.convertDDToDMS($scope.coord.lat);
+                var newLng = CoordsService.convertDDToDMS($scope.coord.lng);
+                $scope.lat = {deg: newLat.deg, min: newLat.min, sec: newLat.sec};
+                $scope.lng = {deg: newLng.deg, min: newLng.min, sec: newLng.sec};
                 $scope.coordId = newCoords.coordId;
             };
 
@@ -38,6 +58,8 @@
                 CoordsService.deleteCoords($rootScope.coords, $scope.coordId);
                 $scope.coordId = null;
                 $scope.coord = {};
+                $scope.lat = {};
+                $scope.lng = {};
 
             };
 
@@ -49,6 +71,10 @@
 
                 //Get resource class
 
+                RestService.getDataById($rootScope.currentUser.userDataID , constant.personal_datasQuery).then(function(data){
+                    $scope.personal_data = data.data;
+                    console.log($scope.personal_data);
+                });
 
                 RestService.getData(constant.resource_classesQuery + '/search?name=' + $scope.resource.class)
                     .then(function(data){
@@ -81,10 +107,10 @@
             $scope.addNewParams = function(){
 
             };
-            $scope.updateResource= function(resource, owner, params) {
+            $scope.updateResource= function(resource, personal_data , params, classId) {
 
                 resource.coordinates = CoordsService.coordsToGeotype($rootScope.coords);
-                resource.class_id = $scope.classId;
+                resource.class_id = classId;
 
                 var j;
                 for (j in $scope.newParams) {
@@ -99,19 +125,12 @@
                     RestService.updateData(params[i], params[i].parameter_id, constant.parametersQuery);
                 }
 
-                if(resource.owner){
-                    RestService.updateData(owner, owner.personal_data_id, constant.personal_datasQuery);
-                }
-                else if (owner && Object.keys(owner).length === constant.paramsNumber){
-                    RestService.createData(owner, constant.personal_datasQuery)
-                        .then(function(response){
-                            resource.owner_data_id = response.data.personal_data_id;
-                            RestService.updateData(resource, resourceId, 'resources');
-                        });
 
-                } else {
-                    RestService.updateData(resource, resourceId, 'resources');
-                }
+                RestService.updateData(personal_data , personal_data.personal_data_id, constant.personal_datasQuery);
+
+
+                RestService.updateData(resource, resourceId, 'resources');
+
                 $location.path('resource/index');
                 $route.reload();
 

@@ -46,6 +46,7 @@ class Resource extends \yii\db\ActiveRecord
 					return $parameters;
 				},
     			'coordinates',
+                'reason',
     			'owner' => function ($model) {
     				return $model->ownerData;
     			},
@@ -58,9 +59,10 @@ class Resource extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'class_id', 'coordinates'], 'required'],
+            [['name', 'class_id', 'coordinates', 'reason'], 'required'],
             [['class_id', 'owner_data_id'], 'integer'],
             [['coordinates'], 'string'],
+            [['reason'], 'string'],
             [['name'], 'string', 'max' => 100]
         ];
     }
@@ -75,6 +77,7 @@ class Resource extends \yii\db\ActiveRecord
             'name' => 'Name',
             'class_id' => 'Class ID',
             'coordinates' => 'Coordinates',
+            'reason' => 'Reason',
             'owner_data_id' => 'Owner Data ID',
         ];
     }

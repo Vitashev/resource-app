@@ -31,16 +31,36 @@
 
             $scope.coordId = null;
             $scope.coord = {};
+            $scope.lat = {};
+            $scope.lng = {};
 
-            $scope.createCoords = function(coord){
+            $scope.isShowMap = false;
+            $scope.showMap = function (){
+                $scope.isShowMap = !$scope.isShowMap;
+            };
+
+            $scope.formatCoords = function(coords){
+                return  CoordsService.formatCoords (coords);
+            };
+
+            $scope.createCoords = function(lat, lng){
+                var lat = CoordsService.convertDMSToDD(lat.deg,lat.min, lat.sec).toFixed(4);
+                var lng = CoordsService.convertDMSToDD(lng.deg,lng.min, lng.sec).toFixed(4);
+                var coord = {lat: lat, lng: lng};
                 if(!CoordsService.createCoords(coord, $rootScope.coords, $scope.coordId)){
                     $scope.coordId = null;
                 }
+                $scope.lat = {};
+                $scope.lng = {};
                 $scope.coord = {};
             };
             $scope.changeCoords = function(coord, coordId){
                 var newCoords = CoordsService.changeCoords(coord, coordId);
                 $scope.coord = newCoords.coord;
+                var newLat = CoordsService.convertDDToDMS($scope.coord.lat);
+                var newLng = CoordsService.convertDDToDMS($scope.coord.lng);
+                $scope.lat = {deg: newLat.deg, min: newLat.min, sec: newLat.sec};
+                $scope.lng = {deg: newLng.deg, min: newLng.min, sec: newLng.sec};
                 $scope.coordId = newCoords.coordId;
             };
 
@@ -48,6 +68,8 @@
                 CoordsService.deleteCoords($rootScope.coords, $scope.coordId);
                 $scope.coordId = null;
                 $scope.coord = {};
+                $scope.lat = {};
+                $scope.lng = {};
 
             };
 
@@ -59,6 +81,14 @@
                     $scope.resources = data.data;
                 });
 
+            //Get personal data start
+
+            RestService.getDataById($rootScope.currentUser.userDataID , constant.personal_datasQuery).then(function(data){
+                $scope.personal_data = data.data;
+                console.log($scope.personal_data);
+            });
+            //Get personal data end
+
             $scope.deleteResource = function(resourceID, ownerId) {
 
                if(confirm("Ви дійсно бажаєте видалити цей ресурс?") == true && resourceID >0){
@@ -67,8 +97,8 @@
                    if (ownerId){
                        RestService.deleteData(ownerId , 'personal_datas');
                    }
-
-                   $route.reload();
+                    $route.reload();
+                    $location.path('resource/index');
 
                 }
             };

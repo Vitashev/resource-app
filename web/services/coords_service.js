@@ -11,6 +11,35 @@
         obj.coordId = null;
         obj.coord = {};
 
+
+        obj.convertDDToDMS =  function (deg) {
+            deg = parseFloat(deg);
+            deg = deg.toFixed(4);
+            var d = Math.floor (deg);
+            var minfloat = (deg-d)*60;
+            var m = Math.floor(minfloat);
+            var secfloat = (minfloat-m)*60;
+            var s = Math.round(secfloat);
+            if (s==60) {
+                m++;
+                s=0;
+            }
+            if (m==60) {
+                d++;
+                m=0;
+            }
+            return {deg: d, min: m, sec: s };
+        };
+
+        obj.convertDMSToDD = function (degrees, minutes, seconds) {
+            return  parseFloat(degrees) + ( parseFloat(minutes)/60) + (parseFloat(seconds)/(60*60));
+        };
+
+        obj.formatCoords = function(coords){
+            var res = obj.convertDDToDMS(coords);
+            return res.deg +"°" + res.min +"\'"+ res.sec + "\"";
+        };
+
         obj.geotypeToCoords = function(coords){
             var newCoords = [];
             console.log(coords);

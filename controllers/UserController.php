@@ -16,12 +16,25 @@ class UserController extends ActiveController
     public function actionLogin()
     {
         $modelLoginFrom = new LoginForm();
+
+
+
+
+
+
+
         if ($modelLoginFrom->load(\Yii::$app->getRequest()->getBodyParams(), '') && $modelLoginFrom->login()) {
             $post = \Yii::$app->getRequest()->getBodyParams();
+
+            $modelUser = new User();
+
             $modelRole = new Role();
             $result = $modelRole->find()
                 ->where(['=','role_id', \Yii::$app->user->identity->getRole()]
                 )->all();
+            $resultuserdata = $modelUser->find()
+                ->where(['=','username', $post['username']]
+                )->one();
             $session = new Session();
             $session->open();
             $session->set('role', $result[0]->name);
@@ -29,7 +42,8 @@ class UserController extends ActiveController
             return [
                 'username' => $post['username'],
                 'role' => $result[0]->name,
-                'isLogined' => true
+                'isLogined' => true,
+                'userDataID' => $resultuserdata->user_data_id
             ];
         } else {
             return $modelLoginFrom;

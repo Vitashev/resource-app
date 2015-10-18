@@ -1,116 +1,150 @@
 <div ng-controller="ExtendedSearchController">
 	<div class="col-md-12">
-		<div class="col-md-4">
-			<div class="thumbnail">
-				RESOURCE name:
-				<input type="text" ng-model="query.resource.name">
-				<br>
-				RESOURCE class:
-				<select class="form-control" id="class"
-						ng-model="query.resource.class_id"
-						ng-options="class.class_id as class.name for class in classes">
-				</select>
-
-				<br>
-
-				<br>
-
-				OWNER first name:
-				<input type="text" ng-model="query.owner.first_name">
-				<br>
-				OWNER last name:
-				<input type="text" ng-model="query.owner.last_name">
-				<br>
-				OWNER middle name:
-				<input type="text" ng-model="query.owner.middle_name">
-				<br>
-				<br>
-
-				PARAMETER length:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.length.start">
-				to:
-				<input type="text" ng-model="query.parameter.length.end">
-				<br>
-				PARAMETER width:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.width.start">
-				to:
-				<input type="text" ng-model="query.parameter.width.end">
-				<br>
-				PARAMETER height:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.height.start">
-				to:
-				<input type="text" ng-model="query.parameter.height.end">
-				<br>
-				PARAMETER square:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.square.start">
-				to:
-				<input type="text" ng-model="query.parameter.square.end">
-				<br>
-				PARAMETER volume:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.volume.start">
-				to:
-				<input type="text" ng-model="query.parameter.volume.end">
-				<br>
-				PARAMETER weight:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.weight.start">
-				to:
-				<input type="text" ng-model="query.parameter.weight.end">
-				<br>
-				PARAMETER perimeter:
-				<br>
-				from:
-				<input type="text" ng-model="query.parameter.perimeter.start">
-				to:
-				<input type="text" ng-model="query.parameter.perimeter.end">
-				<br>
+		<div class="col-md-5">
+			<div class="thumbnail shadow-z-1" style="padding: 15px">
 
 
-				<button ng-click="search()">search</button>
+				<label>Інформація про ресурс</label>
+				<div class="form-group">
+					<div class="col-xs-8">
+						<input type="text" class="form-control" placeholder="назва ресурсу" ng-model="query.resource.name">
+					</div>
+				</div>
+				<br>
+				<div class="form-group">
+					<div class="col-xs-8">
+						<select class="form-control" id="class"
+								ng-model="query.resource.class_id"
+								ng-options="class.class_id as class.name for class in classes">
+						</select>
+					</div>
+				</div>
+				<br><br>
+
+				<label>Інформація про власника</label>
+				<div class="form-group">
+					<div class="col-xs-8">
+						<input type="text" class="form-control" placeholder="ім'я власника" ng-model="query.owner.first_name">
+					</div>
+				</div>
+				<br>
+				<div class="form-group">
+					<div class="col-xs-8">
+						<input type="text" class="form-control" placeholder="прізвище власника" ng-model="query.owner.last_name">
+					</div>
+				</div>
+				<br>
+				<div class="form-group">
+					<div class="col-xs-8">
+						<input type="text" class="form-control" placeholder="по-батькові власника" ng-model="query.owner.middle_name">
+					</div>
+				</div>
+				<br><br>
+
+				<label>Інформація про параметри</label>
+				<div class="form-group">
+					<label>довжина</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.length.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.length.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>ширина</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.width.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.width.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>висота</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.height.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.height.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>площа</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.square.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.square.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>об'єм</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.volume.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.volume.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>вага</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.weight.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.weight.end">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label>периметр</label>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="від" ng-model="query.parameter.perimeter.start">
+					</div>
+					<div class="col-xs-4">
+						<input type="number" class="form-control floating-label" placeholder="до" ng-model="query.parameter.perimeter.end">
+					</div>
+				</div>
+				<br>
+				<button class="btn btn-material-amber-700" ng-click="search()">ШУКАТИ</button>
 			</div>
 		</div>
 
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<div >
-				RESULT:
 				<div ng-repeat="res in resources track by $index" class="jumbotron">
-						<b>resource:</b>
-						<br>
-						name: {{res.name}}
-						<br>
-						class: {{res.class}}
-						<br>
-						<b>parameters:</b>
-						<br>
-						length: {{res.parameters.length}}
-						<br>
-						width: {{res.parameters.width}}
-						<br>
-						heigth: {{res.parameters.height}}
-						<br>
-						square: {{res.parameters.square}}
-						<br>
-						<b>owner:</b>
-						<br>
-						first_name: {{res.owner.first_name}}
-						<br>
-						last_name: {{res.owner.last_name}}
-						<br>
-						middle_name: {{res.owner.middle_name}}
-						<br>
+					<b>resource:</b>
+					<br>
+					name: {{res.name}}
+					<br>
+					class: {{res.class}}
+					<br>
+					<b>parameters:</b>
+					<br>
+					length: {{res.parameters.length}}
+					<br>
+					width: {{res.parameters.width}}
+					<br>
+					heigth: {{res.parameters.height}}
+					<br>
+					square: {{res.parameters.square}}
+					<br>
+					<b>owner:</b>
+					<br>
+					first_name: {{res.owner.first_name}}
+					<br>
+					last_name: {{res.owner.last_name}}
+					<br>
+					middle_name: {{res.owner.middle_name}}
+					<br>
 
-						<br>
+					<br>
 				</div>
 				<!--
                 <div ng-repeat="own in owners" style="background-color: yellow">

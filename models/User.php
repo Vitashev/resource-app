@@ -10,7 +10,7 @@ class User extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
     {
-        return 'User';
+        return 'user';
     }
     public function rules()
     {
@@ -65,6 +65,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function getRole()
     {
         return $this->role_id;
+    }
+    public function getUserDataID()
+    {
+        return $this->user_data_id;
     }
     public function getAuthKey()
     {
