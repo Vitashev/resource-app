@@ -8,6 +8,7 @@
 		};
 
 		$scope.options = {
+			toggleMap: false,
 			coordsToMap: false,
 			showOnMapLatlngs: [],
 			updateMap: false,
@@ -18,7 +19,6 @@
 		};
 
 		$scope.coordsToMap = function (coordinates) {
-			console.log('test');
 			$scope.options.coordsToMap = true;
 			$scope.options.showOnMapLatlngs = L.polygon(coordinates);
 		};
@@ -27,7 +27,11 @@
 			$scope.options.updateMap = true;
 			$scope.options.latlngs = coordinates;
 			$scope.options.zoom = zoom;
-		};
+		}
+
+		$scope.toggleMap = function () {
+			$scope.options.toggleMap = true;
+		}
 
 		$scope.$watch('options.created', function(val){
 
