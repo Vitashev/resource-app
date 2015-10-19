@@ -17,11 +17,15 @@
 			};
 
 			$scope.mapCreated = false;
+			console.log(attrs);
 
 			// Map init
 
+			if (attrs.toggledon === 'true') {
+				$scope.toggleMap();
+			}
+
 			$scope.updateMapView = function (position, zoom) {
-				console.log(position);
 				position = angular.fromJson(position);
 				if (position) {
 					$scope.map.setView(position, zoom);
@@ -30,35 +34,9 @@
 				}
 			};
 
-			$scope.$watch('coordinates.updateMap', function (val) {
-				if (val) {
-					console.log($scope.coordinates.latlngs);
-					$scope.coordinates.latlngs = angular.fromJson($scope.coordinates.latlngs);
-					$scope.updateMapView($scope.coordinates.latlngs[0], $scope.coordinates.zoom);
-					$scope.coordinates.updateMap = false;
-					if ($scope.geoJsonLayer)
-						$scope.map.removeLayer($scope.geoJsonLayer);
-					$scope.geoJsonLayer = L.geoJson(L.polygon($scope.coordinates.latlngs).toGeoJSON(), {
-						style: style,
-						onEachFeature: infoOnEachFeature
-					}).addTo($scope.map);
-				}
-			});
-
-			$scope.$watch('coordinates.coordsToMap', function (val) {
-				if (val) {
-					if ($scope.geoJsonLayer)
-						$scope.map.removeLayer($scope.geoJsonLayer);
-					$scope.coordinates.coordsToMap = false;
-					$scope.geoJsonLayer = L.geoJson($scope.coordinates.showOnMapLatlngs.toGeoJSON(), {
-						style: style,
-						onEachFeature: infoOnEachFeature
-					}).addTo($scope.map);
-				}
-			});
-
 			$scope.createMap = function () {
 				if (!$scope.mapCreated) {
+					$('#map').show();
 					$scope.map = L.map('map'); // drawControl is for Leaflet Draw plugin
 
 					$scope.baseLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -85,12 +63,55 @@
 						$scope.drawControl.removeFrom($scope.map);
 
 					$scope.map.remove();
+					$('#map').hide();
 
 					$scope.mapCreated = false;
 				}
 			};
 
-			$scope.createMap();
+			$scope.toggleMap = function () {
+				console.log('Toggled');
+				if ($scope.mapCreated) {
+					$scope.removeMap();
+				} else {
+					$scope.createMap();
+				}
+			};
+
+			$scope.$watch('options.updateMap', function (val) {
+				if (val) {
+					$scope.options.latlngs = angular.fromJson($scope.options.latlngs);
+					$scope.updateMapView($scope.options.latlngs[0], $scope.options.zoom);
+					$scope.options.updateMap = false;
+					if ($scope.geoJsonLayer)
+						$scope.map.removeLayer($scope.geoJsonLayer);
+					$scope.geoJsonLayer = L.geoJson(L.polygon($scope.options.latlngs).toGeoJSON(), {
+						style: style,
+						onEachFeature: infoOnEachFeature
+					}).addTo($scope.map);
+				}
+			});
+
+			$scope.$watch('options.coordsToMap', function (val) {
+				if (val) {
+					if ($scope.geoJsonLayer)
+						$scope.map.removeLayer($scope.geoJsonLayer);
+					$scope.options.coordsToMap = false;
+					$scope.geoJsonLayer = L.geoJson($scope.options.showOnMapLatlngs.toGeoJSON(), {
+						style: style,
+						onEachFeature: infoOnEachFeature
+					}).addTo($scope.map);
+				}
+			});
+
+			$scope.$watch('options.toggleMap', function (val) {
+				if (val) {
+					$scope.toggleMap();
+					$scope.options.toggleMap = false;
+					//$scope.$apply();
+				}
+			});
+
 
 			function initMapElements() {
 
@@ -206,16 +227,12 @@
 								$scope.bind[i].lat = parseFloat($scope.bind[i].lat.toFixed(4));
 								$scope.bind[i].lng= parseFloat($scope.bind[i].lng.toFixed(4));
 							}
-							$scope.coordinates.newCoords = $scope.bind;
-
-
 							if ($scope.geoJsonLayer)
 								$scope.map.removeLayer($scope.geoJsonLayer);
 							$scope.geoJsonLayer = L.geoJson($scope.drawnItem.toGeoJSON(), {
 								style: style,
 								onEachFeature: infoOnEachFeature
 							}).addTo($scope.map);
-							$scope.coordinates.created = true;
 							$scope.$apply();
 						});
 
@@ -326,7 +343,7 @@
 			controller: 'MapCtrl',
 			scope: {
 				bind: '=bind',
-				coordinates: '=update'
+				options: '=update',
 			},
 			link: link
 		};
